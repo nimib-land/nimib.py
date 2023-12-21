@@ -1,0 +1,3 @@
+- relevant to implement `nb.code`: https://github.com/streamlit/streamlit/blob/1.25.0/lib/streamlit/echo.py
+- code explained: https://discuss.streamlit.io/t/how-does-st-echo-work/48011/3
+- capturing code: https://stackoverflow.com/a/16571630

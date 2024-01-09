@@ -7,14 +7,14 @@ from typing import Iterable, Optional
 from io import StringIO 
 import sys
 import nimporter # when called from nb this is not necessary
-from nimibpy import add_code
+from nimibpy import add_code, add_pyscript
 
 _SPACES_RE = re.compile("\\s*")
 _EMPTY_LINE_RE = re.compile("\\s*\n")
 
 
 @contextlib.contextmanager
-def code():
+def code(pyscript=False):
     """Use in a `with` block to show and execute code while capturing the output.
     """
     # adapted from streamlit's st.echo
@@ -52,15 +52,20 @@ def code():
 
         _stdout = sys.stdout
         sys.stdout = StringIO()
-        yield
+        if not pyscript:
+            yield
         code_output = sys.stdout.getvalue()
         sys.stdout = _stdout
 
         #print("add code block")
         #print("code string:", code_string)
         #print("code output:", code_output)
-        add_code(code_string, code_output)
-
+        if pyscript: # this is not actually run
+            add_pyscript(code_string, code_output)
+            print("[nbcode.py] saving pyscript block")
+            yield
+        else:
+            add_code(code_string, code_output)
     except FileNotFoundError as err:
         print("Unable to display code. %s" % err)
 

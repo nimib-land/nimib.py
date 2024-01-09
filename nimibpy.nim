@@ -57,6 +57,39 @@ proc add_code*(source: string, output: string) {. exportpy .} =
 proc add_text*(output: string) {. exportpy .} =
     add_block("nbText", "", output)
 
+proc add_html*(output: string) {. exportpy .} =
+    add_block("nbRawHtml", "", output)
+    nb.blk.context["output"] = nb.blk.output
+
 proc save*() {. exportpy .} =
-    # need to change filename here! and maybe also source!
     nbSave
+
+proc add_pyscript*(source: string, output: string) {. exportpy .} =
+    add_block("nbPyscriptCode", source, output)
+    nb.blk.context["code"] = nb.blk.code
+    nb.blk.context["output"] = nb.blk.output
+    nb.renderPlans["nbPyscriptCode"] = nb.renderPlans["nbCode"] 
+    echo "[nimibpy.nim] add pyscript"
+
+proc use_pyscript*() {. exportpy .} =
+    echo "[nimibpy.nim] using pyscript"
+    nb.partials["head_other"] = """
+<link
+    rel="stylesheet"
+    href="https://pyscript.net/releases/2024.1.1/core.css"
+/>
+<script
+    type="module"
+    src="https://pyscript.net/releases/2024.1.1/core.js"
+></script>
+"""
+    nb.partials["nbPyscriptSource"] = """
+<script type="micropython">
+{{&code}}
+</script>
+"""
+    nb.partials["nbPyscriptCode"] = """
+{{>nbCodeSource}}
+{{>nbCodeOutput}}
+{{>nbPyscriptSource}}
+"""

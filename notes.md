@@ -12,3 +12,4 @@
 - as a workaround I can raise an error
 - code is full of workarounds
 - adapting Mousey mousey by ntoll https://pyscript.com/@3fd38942-d35c-4bf6-9b8a-37cec059f572/490a83cc-d1d2-4dad-8a74-c385343b010c/latest
+- it would be fun to add also a nbJsCode block... (that adds bunnies)
